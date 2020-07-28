@@ -66,7 +66,7 @@ public class ReportService implements IReportService {
                 .reduce( ( a, b ) -> a.getAmountSold() < b.getAmountSold() ? a : b )
                 .get();
 
-        return null;
+        return lesserAmountSold;
     }
 
     @Override
@@ -92,15 +92,13 @@ public class ReportService implements IReportService {
         if ( searchSale( sale.getId() ) == null ) {
             reportModel.getListOfSales().put( sale.getId(), sale );
 
-            String name = sale.getSalesmanName();
-            SalesmanModel salesman;
-            salesman = reportModel.getListOfSalespeople()
-                    .values()
-                    .stream()
-                    .reduce( (a,b) -> a.getName().equals( name ) ? a:b ).get();
-
-//            SalesmanModel salesman = reportModel.getListOfSalespeople().values();
-            salesman.addBilledAmount( sale.getValue() );
+            String name = sale.getSalesmanName().toLowerCase();
+            Collection< SalesmanModel > list = reportModel.getListOfSalespeople().values();
+            for ( SalesmanModel s : list ) {
+                if ( s.getName().toLowerCase().equals( name ) ) {
+                    s.addBilledAmount( sale.getValue() );
+                }
+            }
         } else {
             incrementNumberOfDuplicateSales();
         }
