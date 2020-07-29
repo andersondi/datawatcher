@@ -1,7 +1,10 @@
 package br.com.andersondi.datawatcher.Service;
 
 import br.com.andersondi.datawatcher.GetPropertyValues;
-import br.com.andersondi.datawatcher.Model.*;
+import br.com.andersondi.datawatcher.Model.CustomerModel;
+import br.com.andersondi.datawatcher.Model.ItemModel;
+import br.com.andersondi.datawatcher.Model.SaleModel;
+import br.com.andersondi.datawatcher.Model.SalesmanModel;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import static java.lang.System.getProperty;
 
 
 public class DataReader {
+
     GetPropertyValues properties;
     private final String HOMEPATH = getProperty( "user.home" );
     private final String MAIN_DELIMITER;
@@ -29,6 +33,7 @@ public class DataReader {
     private List< File > files;
 
     public DataReader() throws IOException {
+
         properties = new GetPropertyValues();
         MAIN_DELIMITER = properties.getPropValues( "mainDelimiter" );
         PRIMARY_DELIMITER = properties.getPropValues( "primaryDelimiter" );
@@ -41,8 +46,6 @@ public class DataReader {
         SALESMAN_ID = 1;
         CUSTOMER_ID = 2;
         SALES_ID = 3;
-
-        processFiles();
     }
 
     private void readFiles() {
@@ -51,10 +54,9 @@ public class DataReader {
         File dir = new File( INPUT_PATH );
 
         files = Arrays.asList( dir.listFiles( filter ) );
-        System.out.println( "Foram lidos " + files.size() + " arquivos validos" );
     }
 
-    private void processFiles() {
+    public void processFiles() {
         readFiles();
 
         for ( File file : files ) {
