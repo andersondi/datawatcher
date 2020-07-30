@@ -19,8 +19,8 @@ public class ReportModel {
         numberOfDuplicateSalesman = 0;
         numberOfDuplicateCustomers = 0;
         numberOfDuplicateSales = 0;
-        this.worstSalesman = getWorstSalesman();
-        this.betterSale = getBetterSale();
+        worstSalesman = getWorstSalesman();
+        betterSale = getBetterSale();
     }
 
     public Integer getNumberOfDuplicateSalesman() {

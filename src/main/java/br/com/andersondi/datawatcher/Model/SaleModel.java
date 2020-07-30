@@ -11,7 +11,7 @@ public class SaleModel {
 
     public SaleModel( String id, String salesmanName, List<ItemModel> listOfItems ) {
         this.id = id;
-        this.salesmanName = salesmanName;
+        this.salesmanName = salesmanName.toLowerCase();
         this.listOfItems = listOfItems;
         this.value = calculateSaleValue( listOfItems );
     }

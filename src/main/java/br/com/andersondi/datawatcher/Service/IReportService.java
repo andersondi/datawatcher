@@ -5,7 +5,6 @@ import br.com.andersondi.datawatcher.Model.SaleModel;
 import br.com.andersondi.datawatcher.Model.SalesmanModel;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public interface IReportService {
     SaleModel searchSale( String id );

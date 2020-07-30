@@ -8,9 +8,8 @@ public class SalesmanModel {
 
     public SalesmanModel( String cpf, String name, Double salary ) {
         this.cpf = cpf;
-        this.name = name;
+        this.name = name.toLowerCase();
         this.salary = salary;
-        this.amountSold = amountSold;
     }
 
     public String getCpf() {

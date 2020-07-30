@@ -13,7 +13,6 @@ import java.util.List;
 
 import static java.lang.System.getProperty;
 
-
 public class DataReader {
 
     GetPropertyValues properties;

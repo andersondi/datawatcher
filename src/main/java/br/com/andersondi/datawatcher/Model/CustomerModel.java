@@ -7,8 +7,8 @@ public class CustomerModel {
 
     public CustomerModel(String cnpj, String name, String businessArea) {
         this.cnpj = cnpj;
-        this.name = name;
-        this.businessArea = businessArea;
+        this.name = name.toLowerCase();
+        this.businessArea = businessArea.toLowerCase();
     }
 
     public String getCnpj() {
