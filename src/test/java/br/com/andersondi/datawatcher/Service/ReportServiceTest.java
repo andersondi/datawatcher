@@ -10,8 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,14 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ReportServiceTest {
     @TempDir
     static Path tempDir;
-
-    @BeforeAll
-    static void setupDirectories() {
-        File testDir = new File( tempDir + "/data-test/out" );
-        System.out.println( "BeforeAll " + testDir );
-
-        testDir.mkdirs();
-    }
 
     @Test
     void searchForASaleUsingAnExistentId() {
@@ -292,15 +288,35 @@ class ReportServiceTest {
 
     @Test
     void generateReport() {
-    }
+        ReportService fileReport = new ReportService();
 
-    @AfterAll
-    static void cleanGarbage() {
-        File testDir = new File( tempDir + "/data-test" );
+        List< ItemModel > list1 = new ArrayList<>() {
+            {
+                add( new ItemModel( "1", 10, 100.0 ) );
+                add( new ItemModel( "2", 30, 50.0 ) );
+                add( new ItemModel( "3", 40, 10.0 ) );
+            }
+        };
+        SaleModel sale1 = new SaleModel( "1", "Pedro", list1 );
+        fileReport.addSale( sale1 );
 
-        for ( File f : testDir.listFiles() ) {
-            f.delete();
-        }
-        testDir.delete();
+        CustomerModel customer1 = new CustomerModel( "2345675434544345", "Jose", "Rural" );
+        fileReport.addCustomer( customer1 );
+
+        SalesmanModel salesman1 = new SalesmanModel( "12345678900", "Pedro", 50000.0 );
+        fileReport.addSalesman( salesman1 );
+
+        Path dataOutput = tempDir.resolve( "out" );
+
+        File dir = new File( dataOutput.toUri() );
+        dir.mkdirs();
+
+        fileReport.generateReport( dataOutput.toString(), "data.dat" );
+        List< File > files = Arrays.asList( dir.listFiles() );
+
+        assertAll( "report",
+                () -> assertTrue( Files.exists( files.get( 0 ).toPath() ) ),
+                () -> assertEquals( "data.done.dat", files.get( 0 ).getName() )
+        );
     }
 }
