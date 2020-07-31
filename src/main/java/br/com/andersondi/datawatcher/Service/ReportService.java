@@ -51,7 +51,7 @@ public class ReportService implements IReportService {
                 .values()
                 .stream()
                 .reduce( ( a, b ) -> a.getValue() > b.getValue() ? a : b )
-                .get();
+                .orElse(null);
 
         return mostExpensiveSale;
     }
@@ -64,7 +64,7 @@ public class ReportService implements IReportService {
                 .values()
                 .stream()
                 .reduce( ( a, b ) -> a.getAmountSold() < b.getAmountSold() ? a : b )
-                .get();
+                .orElse(null);
 
         return lesserAmountSold;
     }
@@ -106,6 +106,7 @@ public class ReportService implements IReportService {
 
     @Override
     public void generateReport( String outputPath, String fileName ) {
+//    public File generateReport( String outputPath, String fileName ) {
         SaleModel betterSale = findBetterSale( reportModel.getListOfSales() );
         reportModel.setBetterSale( betterSale );
 
@@ -117,7 +118,6 @@ public class ReportService implements IReportService {
         try {
             String inputFileFullPath = outputPath + "/" + fileName;
             String fullPath = outputPath + "/" + fileName.replace( ".dat", ".done.dat" );
-            System.out.println( MessageFormat.format( "Writing results file {0}", fullPath ) );
             writer = new PrintWriter( fullPath );
             String time = new SimpleDateFormat( "dd MMM yyyy HH:mm:ss" ).format( Calendar.getInstance().getTime() );
             writer.println( MessageFormat.format( "Dados referentes ao arquivo {0}", inputFileFullPath ) );
