@@ -1,8 +1,11 @@
 package br.com.andersondi.datawatcher.Service;
 
 import br.com.andersondi.datawatcher.GetPropertyValues;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+
 import static java.lang.System.getProperty;
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -14,9 +17,15 @@ public class DirectoryMonitor {
     DataReader dataReader = new DataReader();
 
     public DirectoryMonitor() throws IOException {
+        this.generateMinimalDirectoriesStructure();
         this.watcher = FileSystems.getDefault().newWatchService();
         this.dir.register( watcher, ENTRY_CREATE, ENTRY_MODIFY );
         dataReader.processFiles();
+    }
+
+    private void generateMinimalDirectoriesStructure() throws IOException {
+        new File( HOMEPATH + properties.getPropValues( "inputPath" ) ).mkdirs();
+        new File( HOMEPATH + properties.getPropValues( "outputPath" ) ).mkdirs();
     }
 
     public void processEvents() {
@@ -37,18 +46,7 @@ public class DirectoryMonitor {
 
                 WatchEvent< Path > ev = ( WatchEvent< Path > ) event;
                 Path filename = ev.context();
-
-                try {
-                    Path child = dir.resolve( filename );
-                    if ( !Files.probeContentType( child ).equals( "text/plain" ) ) {
-                        System.err.format( "New file '%s' is not a plain text file.%n", filename );
-                        continue;
-                    }
-                } catch ( IOException x ) {
-                    System.err.println( x );
-                    continue;
-                }
-
+                dir.resolve( filename );
                 dataReader.processFiles();
             }
 
