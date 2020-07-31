@@ -7,9 +7,12 @@ import br.com.andersondi.datawatcher.Model.SaleModel;
 import br.com.andersondi.datawatcher.Model.SalesmanModel;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.lang.System.getProperty;
 
@@ -20,11 +23,8 @@ public class DataReader {
     private final String MAIN_DELIMITER;
     private final String PRIMARY_DELIMITER;
     private final String SECONDARY_DELIMITER;
-    private final String TARGET_EXTETION;
     private final String INPUT_PATH;
     private final String OUTPUT_PATH;
-    private final String PROCESSED_FILE_PATH;
-    private final String REJECTED_FILE_PATH;
     private final Integer SALESMAN_ID;
     private final Integer CUSTOMER_ID;
     private final Integer SALES_ID;
@@ -37,18 +37,22 @@ public class DataReader {
         MAIN_DELIMITER = properties.getPropValues( "mainDelimiter" );
         PRIMARY_DELIMITER = properties.getPropValues( "primaryDelimiter" );
         SECONDARY_DELIMITER = properties.getPropValues( "secondaryDelimiter" );
-        TARGET_EXTETION = properties.getPropValues( "targetExtension" );
         INPUT_PATH = HOMEPATH + properties.getPropValues( "inputPath" );
         OUTPUT_PATH = HOMEPATH + properties.getPropValues( "outputPath" );
-        PROCESSED_FILE_PATH = HOMEPATH + properties.getPropValues( "processedFilePath" );
-        REJECTED_FILE_PATH = HOMEPATH + properties.getPropValues( "rejectedFilePath" );
         SALESMAN_ID = 1;
         CUSTOMER_ID = 2;
         SALES_ID = 3;
     }
 
+    private boolean filenameIsValid( Path filename ) {
+        Pattern regexName = Pattern.compile( "[^\\s]+[_A-Za-z0-9](\\.(dat)$)" );
+        Matcher match = regexName.matcher( filename.toString() );
+        boolean response = match.matches();
+        return response;
+    }
+
     private void readFiles() {
-        FileFilter filter = file -> file.getName().endsWith( TARGET_EXTETION );
+        FileFilter filter = file -> filenameIsValid( file.toPath() );
 
         File dir = new File( INPUT_PATH );
 
