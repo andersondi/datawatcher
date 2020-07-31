@@ -5,6 +5,8 @@ import br.com.andersondi.datawatcher.Model.CustomerModel;
 import br.com.andersondi.datawatcher.Model.ItemModel;
 import br.com.andersondi.datawatcher.Model.SaleModel;
 import br.com.andersondi.datawatcher.Model.SalesmanModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -17,6 +19,7 @@ import java.util.regex.Pattern;
 import static java.lang.System.getProperty;
 
 public class DataReader {
+    private static final Logger logger = LoggerFactory.getLogger(DataReader.class);
 
     GetPropertyValues properties;
     private final String HOMEPATH = getProperty( "user.home" );
@@ -48,6 +51,11 @@ public class DataReader {
         Pattern regexName = Pattern.compile( "[^\\s]+[_A-Za-z0-9](\\.(dat)$)" );
         Matcher match = regexName.matcher( filename.toString() );
         boolean response = match.matches();
+        if(response){
+            logger.info( "The name {} is a valid file name",filename );
+        }else{
+            logger.info( "The name {} is not a valid file name",filename );
+        }
         return response;
     }
 
@@ -104,6 +112,7 @@ public class DataReader {
         }
         SaleModel sale = new SaleModel( line[ 1 ], line[ 3 ], listOfItems );
         fileReport.addSale( sale );
+        logger.info( "Find a new sale" );
     }
 
     private void parseCustomer( String[] line, ReportService fileReport ) {
@@ -112,6 +121,7 @@ public class DataReader {
         String businessArea = line[ 3 ];
         CustomerModel customer = new CustomerModel( cnpj, name, businessArea );
         fileReport.addCustomer( customer );
+        logger.info( "Find a new customer" );
     }
 
     private void parseSalesman( String[] line, ReportService fileReport ) {
@@ -120,6 +130,7 @@ public class DataReader {
         Double salary = Double.parseDouble( line[ 3 ] );
         SalesmanModel salesman = new SalesmanModel( cpf, name, salary );
         fileReport.addSalesman( salesman );
+        logger.info( "Find a new salesman" );
     }
 
     private boolean isSale( Integer id ) {

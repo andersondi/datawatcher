@@ -4,6 +4,7 @@ import br.com.andersondi.datawatcher.Model.CustomerModel;
 import br.com.andersondi.datawatcher.Model.ReportModel;
 import br.com.andersondi.datawatcher.Model.SaleModel;
 import br.com.andersondi.datawatcher.Model.SalesmanModel;
+import org.springframework.util.StringUtils;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -51,7 +52,7 @@ public class ReportService implements IReportService {
                 .values()
                 .stream()
                 .reduce( ( a, b ) -> a.getValue() > b.getValue() ? a : b )
-                .orElse(null);
+                .orElse( null );
 
         return mostExpensiveSale;
     }
@@ -64,7 +65,7 @@ public class ReportService implements IReportService {
                 .values()
                 .stream()
                 .reduce( ( a, b ) -> a.getAmountSold() < b.getAmountSold() ? a : b )
-                .orElse(null);
+                .orElse( null );
 
         return lesserAmountSold;
     }
@@ -106,7 +107,6 @@ public class ReportService implements IReportService {
 
     @Override
     public void generateReport( String outputPath, String fileName ) {
-//    public File generateReport( String outputPath, String fileName ) {
         SaleModel betterSale = findBetterSale( reportModel.getListOfSales() );
         reportModel.setBetterSale( betterSale );
 
@@ -116,17 +116,16 @@ public class ReportService implements IReportService {
         PrintWriter writer = null;
 
         try {
-            String inputFileFullPath = outputPath + "/" + fileName;
             String fullPath = outputPath + "/" + fileName.replace( ".dat", ".done.dat" );
             writer = new PrintWriter( fullPath );
             String time = new SimpleDateFormat( "dd MMM yyyy HH:mm:ss" ).format( Calendar.getInstance().getTime() );
-            writer.println( MessageFormat.format( "Dados referentes ao arquivo {0}", inputFileFullPath ) );
+            writer.println( MessageFormat.format( "Dados referentes ao arquivo {0}", fileName ) );
             writer.println( MessageFormat.format( "{0}", time ) );
             writer.println( "==============================" );
             writer.println( MessageFormat.format( "Numero de clientes: {0}", reportModel.getListOfCustomers().size() ) );
             writer.println( MessageFormat.format( "Numero de vendedores: {0}", reportModel.getListOfSalespeople().size() ) );
             writer.println( MessageFormat.format( "ID da transacao de maior valor: {0}", reportModel.getBetterSale().getId() ) );
-            writer.println( MessageFormat.format( "Vendedor com pior desempenho: {0}", reportModel.getWorstSalesman().getName() ) );
+            writer.println( MessageFormat.format( "Vendedor com pior desempenho: {0}", StringUtils.capitalize( reportModel.getWorstSalesman().getName() ) ) );
             writer.println( "\n" );
             writer.println( MessageFormat.format( "Desconsideradas {0} entradas de clientes repetidos", reportModel.getNumberOfDuplicateCustomers() ) );
             writer.println( MessageFormat.format( "Desconsideradas {0} entradas de vendedores repetidos", reportModel.getNumberOfDuplicateSalesman() ) );
