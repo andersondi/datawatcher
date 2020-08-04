@@ -25,6 +25,8 @@ public interface IReportService {
 
     void incrementNumberOfDuplicateSales();
 
+    void incrementNumberOfInvalidInput();
+
     SaleModel findBetterSale( HashMap<String, SaleModel> saleList );
 
     SalesmanModel findWorstSalesman( HashMap<String, SalesmanModel> salesmanList );

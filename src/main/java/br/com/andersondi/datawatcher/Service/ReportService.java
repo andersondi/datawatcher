@@ -46,6 +46,11 @@ public class ReportService implements IReportService {
     }
 
     @Override
+    public void incrementNumberOfInvalidInput() {
+        reportModel.setNumberOfInvalidInputs( reportModel.getNumberOfInvalidInputs() + 1 );
+    }
+
+    @Override
     public SaleModel findBetterSale( HashMap< String, SaleModel > saleList ) {
 
         SaleModel mostExpensiveSale = saleList
@@ -129,6 +134,7 @@ public class ReportService implements IReportService {
             writer.println( "\n" );
             writer.println( MessageFormat.format( "Desconsideradas {0} entradas de clientes repetidos", reportModel.getNumberOfDuplicateCustomers() ) );
             writer.println( MessageFormat.format( "Desconsideradas {0} entradas de vendedores repetidos", reportModel.getNumberOfDuplicateSalesman() ) );
+            writer.println( MessageFormat.format( "Encontradas {0} entradas invalidas", reportModel.getNumberOfInvalidInputs() ) );
             writer.println( "==============================" );
 
         } catch (

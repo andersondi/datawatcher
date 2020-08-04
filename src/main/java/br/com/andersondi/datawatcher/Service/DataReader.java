@@ -15,11 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static java.lang.System.getProperty;
 
 public class DataReader {
-    private static final Logger logger = LoggerFactory.getLogger(DataReader.class);
+    private static final Logger logger = LoggerFactory.getLogger( DataReader.class );
 
     GetPropertyValues properties;
     private final String HOMEPATH = getProperty( "user.home" );
@@ -51,10 +52,10 @@ public class DataReader {
         Pattern regexName = Pattern.compile( "[^\\s]+[_A-Za-z0-9](\\.(dat)$)" );
         Matcher match = regexName.matcher( filename.toString() );
         boolean response = match.matches();
-        if(response){
-            logger.info( "The name {} is a valid file name",filename );
-        }else{
-            logger.info( "The name {} is not a valid file name",filename );
+        if ( response ) {
+            logger.info( "The name {} is a valid file name", filename );
+        } else {
+            logger.info( "The name {} is not a valid file name", filename );
         }
         return response;
     }
@@ -76,15 +77,20 @@ public class DataReader {
             ) {
                 ReportService fileReport = new ReportService();
                 for ( String line = reader.readLine(); line != null; line = reader.readLine() ) {
-                    String delims = "[ç]+";
-                    String[] tokens = line.split( delims );
-                    Integer id = Integer.parseInt( tokens[ 0 ] );
-                    if ( isSalesman( id ) ) {
-                        parseSalesman( tokens, fileReport );
-                    } else if ( isCustomer( id ) ) {
-                        parseCustomer( tokens, fileReport );
-                    } else if ( isSale( id ) ) {
-                        parseSale( tokens, fileReport );
+                    String finalLine = line;
+                    if ( Stream.of( "001", "002", "003" ).anyMatch( s -> finalLine.startsWith( s ) ) ) {
+                        String delims = "[ç]+";
+                        String[] tokens = line.split( delims );
+                        Integer id = Integer.parseInt( tokens[ 0 ] );
+                        if ( isSalesman( id ) ) {
+                            parseSalesman( tokens, fileReport );
+                        } else if ( isCustomer( id ) ) {
+                            parseCustomer( tokens, fileReport );
+                        } else if ( isSale( id ) ) {
+                            parseSale( tokens, fileReport );
+                        }
+                    } else {
+                        continue;
                     }
                 }
 
@@ -96,41 +102,58 @@ public class DataReader {
     }
 
     private void parseSale( String[] line, ReportService fileReport ) {
-        String input = line[ 2 ];
-        String[] result = input.substring( 1, input.length() - 1 ).split( PRIMARY_DELIMITER );
+        if ( line.length == 4 ) {
+            String input = line[ 2 ];
+            String[] result = input.substring( 1, input.length() - 1 ).split( PRIMARY_DELIMITER );
 
-        List< ItemModel > listOfItems = new ArrayList<>();
+            List< ItemModel > listOfItems = new ArrayList<>();
 
-        for ( String str : result ) {
-            String[] itemParameters = str.split( SECONDARY_DELIMITER );
-            ItemModel newItem = new ItemModel(
-                    itemParameters[ 0 ],
-                    Integer.parseInt( itemParameters[ 1 ] ),
-                    Double.parseDouble( itemParameters[ 2 ] )
-            );
-            listOfItems.add( newItem );
+            for ( String str : result ) {
+                String[] itemParameters = str.split( SECONDARY_DELIMITER );
+                ItemModel newItem = new ItemModel(
+                        itemParameters[ 0 ],
+                        Integer.parseInt( itemParameters[ 1 ] ),
+                        Double.parseDouble( itemParameters[ 2 ] )
+                );
+                listOfItems.add( newItem );
+            }
+            SaleModel sale = new SaleModel( line[ 1 ], line[ 3 ], listOfItems );
+            fileReport.addSale( sale );
+            logger.info( "Find a new sale" );
+        } else {
+            fileReport.incrementNumberOfInvalidInput();
+            logger.info( "Invalid input" );
         }
-        SaleModel sale = new SaleModel( line[ 1 ], line[ 3 ], listOfItems );
-        fileReport.addSale( sale );
-        logger.info( "Find a new sale" );
     }
 
     private void parseCustomer( String[] line, ReportService fileReport ) {
-        String cnpj = line[ 1 ];
-        String name = line[ 2 ];
-        String businessArea = line[ 3 ];
-        CustomerModel customer = new CustomerModel( cnpj, name, businessArea );
-        fileReport.addCustomer( customer );
-        logger.info( "Find a new customer" );
+        if ( line.length == 4 ) {
+
+            String cnpj = line[ 1 ];
+            String name = line[ 2 ];
+            String businessArea = line[ 3 ];
+            CustomerModel customer = new CustomerModel( cnpj, name, businessArea );
+            fileReport.addCustomer( customer );
+            logger.info( "Find a new customer" );
+        } else {
+            fileReport.incrementNumberOfInvalidInput();
+            logger.info( "Invalid input" );
+        }
     }
 
     private void parseSalesman( String[] line, ReportService fileReport ) {
-        String cpf = line[ 1 ];
-        String name = line[ 2 ];
-        Double salary = Double.parseDouble( line[ 3 ] );
-        SalesmanModel salesman = new SalesmanModel( cpf, name, salary );
-        fileReport.addSalesman( salesman );
-        logger.info( "Find a new salesman" );
+        if ( line.length == 4 ) {
+
+            String cpf = line[ 1 ];
+            String name = line[ 2 ];
+            Double salary = Double.parseDouble( line[ 3 ] );
+            SalesmanModel salesman = new SalesmanModel( cpf, name, salary );
+            fileReport.addSalesman( salesman );
+            logger.info( "Find a new salesman" );
+        } else {
+            fileReport.incrementNumberOfInvalidInput();
+            logger.info( "Invalid input" );
+        }
     }
 
     private boolean isSale( Integer id ) {

@@ -9,6 +9,7 @@ public class ReportModel {
     private Integer numberOfDuplicateSalesman;
     private Integer numberOfDuplicateCustomers;
     private Integer numberOfDuplicateSales;
+    private Integer numberOfInvalidInputs;
     private SalesmanModel worstSalesman;
     private SaleModel betterSale;
 
@@ -19,6 +20,7 @@ public class ReportModel {
         numberOfDuplicateSalesman = 0;
         numberOfDuplicateCustomers = 0;
         numberOfDuplicateSales = 0;
+        numberOfInvalidInputs = 0;
         worstSalesman = getWorstSalesman();
         betterSale = getBetterSale();
     }
@@ -85,5 +87,13 @@ public class ReportModel {
 
     public void setBetterSale( SaleModel betterSale ) {
         this.betterSale = betterSale;
+    }
+
+    public Integer getNumberOfInvalidInputs() {
+        return numberOfInvalidInputs;
+    }
+
+    public void setNumberOfInvalidInputs( Integer numberOfInvalidInputs ) {
+        this.numberOfInvalidInputs = numberOfInvalidInputs;
     }
 }
