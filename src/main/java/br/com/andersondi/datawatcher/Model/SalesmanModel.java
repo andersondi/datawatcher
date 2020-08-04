@@ -1,10 +1,12 @@
 package br.com.andersondi.datawatcher.Model;
 
 public class SalesmanModel {
-    String cpf;
-    String name;
-    Double salary;
+    String cpf = "";
+    String name = "";
+    Double salary = 0.0;
     Double amountSold = 0.0;
+
+    public SalesmanModel() {}
 
     public SalesmanModel( String cpf, String name, Double salary ) {
         this.cpf = cpf;

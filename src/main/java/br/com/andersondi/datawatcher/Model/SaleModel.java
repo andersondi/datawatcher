@@ -1,25 +1,27 @@
 package br.com.andersondi.datawatcher.Model;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class SaleModel {
     private String id;
     private String salesmanName;
     private Double value = 0.0;
-    private List<ItemModel> listOfItems;
+    private List< ItemModel > listOfItems;
 
-    public SaleModel( String id, String salesmanName, List<ItemModel> listOfItems ) {
+    public SaleModel() {
+    }
+
+    public SaleModel( String id, String salesmanName, List< ItemModel > listOfItems ) {
         this.id = id;
         this.salesmanName = salesmanName.toLowerCase();
         this.listOfItems = listOfItems;
         this.value = calculateSaleValue( listOfItems );
     }
 
-    private Double calculateSaleValue(List<ItemModel> listOfItems) {
+    private Double calculateSaleValue( List< ItemModel > listOfItems ) {
         Double result = 0.0;
 
-        for(ItemModel item : listOfItems){
+        for ( ItemModel item : listOfItems ) {
             result += ( item.getPrice() * item.getQuantity() );
         }
 
@@ -30,7 +32,7 @@ public class SaleModel {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId( String id ) {
         this.id = id;
     }
 
@@ -38,7 +40,7 @@ public class SaleModel {
         return salesmanName;
     }
 
-    public void setSalesmanName(String salesmanName) {
+    public void setSalesmanName( String salesmanName ) {
         this.salesmanName = salesmanName;
     }
 
@@ -46,15 +48,15 @@ public class SaleModel {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue( Double value ) {
         this.value = value;
     }
 
-    public List<ItemModel> getListOfItems() {
+    public List< ItemModel > getListOfItems() {
         return listOfItems;
     }
 
-    public void setListOfItens(List<ItemModel> listOfItems) {
+    public void setListOfItens( List< ItemModel > listOfItems ) {
         this.listOfItems = listOfItems;
     }
 

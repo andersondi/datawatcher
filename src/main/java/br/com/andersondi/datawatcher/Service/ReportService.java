@@ -54,7 +54,7 @@ public class ReportService implements IReportService {
                 .reduce( ( a, b ) -> a.getValue() > b.getValue() ? a : b )
                 .orElse( null );
 
-        return mostExpensiveSale;
+        return mostExpensiveSale != null ? mostExpensiveSale : new SaleModel();
     }
 
 
@@ -67,7 +67,7 @@ public class ReportService implements IReportService {
                 .reduce( ( a, b ) -> a.getAmountSold() < b.getAmountSold() ? a : b )
                 .orElse( null );
 
-        return lesserAmountSold;
+        return lesserAmountSold != null ? lesserAmountSold : new SalesmanModel();
     }
 
     @Override
