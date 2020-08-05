@@ -100,8 +100,10 @@ Faça o clone do projeto:
 ```sh
   $ git clone https://github.com/andersondi/datawatcher.git
 ```
-Para fazer o _build_ da aplicação é necessário o **Gradle**. Para isso faça:
+Para fazer o _build_ da aplicação é necessário o **[Gradle 6.4.1](https://gradle.org/install/)**. Para isso faça:
 ```sh
+  $ curl -s "https://get.sdkman.io" | bash
+  $ sdk install gradle 6.4.1
   $ cd /home/datawatcher/
   $ ./gradlew build -x test && java -jar build/libs/datawatcher-0.0.1.jar
 ```
