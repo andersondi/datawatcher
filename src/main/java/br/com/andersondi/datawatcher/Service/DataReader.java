@@ -36,7 +36,6 @@ public class DataReader {
     private List< File > files;
 
     public DataReader() throws IOException {
-
         properties = new GetPropertyValues();
         MAIN_DELIMITER = properties.getPropValues( "mainDelimiter" );
         PRIMARY_DELIMITER = properties.getPropValues( "primaryDelimiter" );
@@ -60,16 +59,18 @@ public class DataReader {
         return response;
     }
 
-    private void readFiles() {
+    private List< File > readFiles( Path inputPath) {
         FileFilter filter = file -> filenameIsValid( file.toPath() );
 
-        File dir = new File( INPUT_PATH );
+        File dir = new File( String.valueOf( inputPath ) );
 
         files = Arrays.asList( dir.listFiles( filter ) );
+
+        return files;
     }
 
-    public void processFiles() {
-        readFiles();
+    public void processFiles(Path inputFoldersPath) {
+        files = readFiles(inputFoldersPath);
 
         for ( File file : files ) {
             try (
@@ -167,6 +168,5 @@ public class DataReader {
     private boolean isCustomer( Integer id ) {
         return id.equals( CUSTOMER_ID );
     }
-
 }
 

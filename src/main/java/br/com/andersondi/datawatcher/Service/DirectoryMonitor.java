@@ -20,7 +20,7 @@ public class DirectoryMonitor {
         this.generateMinimalDirectoriesStructure();
         this.watcher = FileSystems.getDefault().newWatchService();
         this.dir.register( watcher, ENTRY_CREATE, ENTRY_MODIFY );
-        dataReader.processFiles();
+        dataReader.processFiles(dir);
     }
 
     private void generateMinimalDirectoriesStructure() throws IOException {
@@ -47,7 +47,7 @@ public class DirectoryMonitor {
                 WatchEvent< Path > ev = ( WatchEvent< Path > ) event;
                 Path filename = ev.context();
                 dir.resolve( filename );
-                dataReader.processFiles();
+                dataReader.processFiles(dir);
             }
 
             boolean valid = key.reset();

@@ -4,16 +4,12 @@ import br.com.andersondi.datawatcher.Model.CustomerModel;
 import br.com.andersondi.datawatcher.Model.ItemModel;
 import br.com.andersondi.datawatcher.Model.SaleModel;
 import br.com.andersondi.datawatcher.Model.SalesmanModel;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
