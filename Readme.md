@@ -66,33 +66,35 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
 ## Resultados
 
-O arquivo de relatório gerado tem este formato:
+O arquivo de relatório gerado tem o seguinte formato:
 ```sh
-  Dados referentes ao arquivo HOMEPATH/data/in/data.dat
-  31 jul 2020 03:50:58
+  Dados referentes ao arquivo testFileWithAll.dat
+  04 Aug 2020 23:48:29
   ==============================
-  Numero de clientes: 2
-  Numero de vendedores: 2
-  ID da transacao de maior valor: 10
-  Vendedor com pior desempenho: Paulo
+  Numero de clientes: 22
+  Numero de vendedores: 25
+  ID da transacao de maior valor: 12
+  Vendedor com pior desempenho: Matheus
   
   
-  Desconsideradas 2 entradas de clientes repetidos
-  Desconsideradas 2 entradas de vendedores repetidos
+  Desconsideradas 1 entradas de clientes repetidos
+  Desconsideradas 0 entradas de vendedores repetidos
+  Encontradas 5 entradas invalidas
   ==============================
 ```
 Como pode ser visto abaixo, o sistema desconsidera arquivos com nomes incorretos ou extensões incorretas.
 
 ![Peek 2020-07-31 02-29](https://user-images.githubusercontent.com/46526999/89006502-4b3b3c00-d2dd-11ea-9104-6718a42234ad.gif)
 
-Abaixo é mostrado o processamento de um arquivo e a geração de um relátório.
+Abaixo é mostrado o processamento de um arquivo e a geração de um relátório. Quebras de linha são tratadas como entradas inválidas.
 
-![Peek 2020-07-31 02-30](https://user-images.githubusercontent.com/46526999/89006247-aae51780-d2dc-11ea-9195-1aa312e9b674.gif)
+![Peek 2020-08-05 01-14](https://user-images.githubusercontent.com/46526999/89371310-5d402480-d6b9-11ea-9b29-6ecb60b51d35.gif)
+
 
 
 ## Como usar
 
-  É **necessário** possuir o **[JRE1.8](https://www.java.com/pt_BR/download/)** instalado na máquina.
+  É **necessário** possuir o **[JDK11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)** instalado na máquina.
 
 Faça o clone do projeto:
 ```sh
